@@ -1,0 +1,99 @@
+{% extends 'user-center-base.html' %}
+
+{% block content %}
+
+    <div class="item">
+        <div class="content">
+            <h3>用户名</h3>
+            <div class="description">
+                <p>{{ request.user }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="ui hidden divider"></div>
+
+    <form action="{% url 'users:user_center_modify' %}" method="post">
+        <div class="item">
+            <div class="content">
+                <div class="description">
+                    <div class="ui form">
+                        <div class="inline field">
+                            <label>昵称</label>
+                            <input type="text" name="nick_name" placeholder="{{ request.user.nick_name }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui hidden divider"></div>
+
+        <div class="item">
+            <div class="content">
+                <div class="description">
+                    <div class="ui form">
+                        <div class="inline field">
+                            <label>邮箱</label>
+                            <input type="text" name="email" placeholder="{{ request.user.email }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui hidden divider"></div>
+
+        <div class="item">
+            <div class="content">
+                <div class="description">
+                    <div class="ui form">
+                        <div class="inline field">
+                            <label>手机</label>
+                            <input type="text" name="mobile" placeholder="{{ request.user.mobile }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui hidden divider"></div>
+
+        <button class="ui teal button" type="submit" id="btn-mod">确认修改</button>
+        {% csrf_token %}
+    </form>
+
+
+    <div class="item">
+        <div class="content">
+            <h3>密码</h3>
+            <div class="description">
+                <form class="ui form">
+                    <div class="field">
+                        <label>当前密码</label>
+                        <input type="text" name="password" placeholder="">
+                    </div>
+                    <div class="field">
+                        <label>新密码</label>
+                        <input type="text" name="password" placeholder="">
+                    </div>
+                    <div class="field">
+                        <label>确认新密码</label>
+                        <input type="text" name="password" placeholder="">
+                    </div>
+                    <button class="ui teal button">更改密码</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $('#btn-mod').click(function () {
+            if (data.status == 'success') {
+                $('#btn-mod').alert("修改成功");
+            } else if (data.status == 'fail') {
+                $('#btn-mod').alert("修改失败");
+            }
+
+        })
+    </script>
+{% endblock %}
+
+

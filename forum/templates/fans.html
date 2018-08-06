@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block con_ten %}
+    <div class="ui raised segment">
+        <div class="ui breadcrumb">
+            <a href="#" class="section">主页</a>
+            <i class="right angle icon divider"></i>
+            <a href="#" class="section">技术</a>
+            <i class="right angle icon divider"></i>
+            <a href="#" class="section">Python</a>
+        </div>
+        <!--主题内容-->
+        <div class="ui vertical segment">
+            <div class="ui container">
+                <div class="ui divided items">
+                    {% for fans in fans_list %}
+
+                        <div class="item">
+                            <div class="ui tiny image">
+                                <img src="{{ MEDIA_URL }}{{ fans.avatar }}" alt="">
+                            </div>
+                            <div class="content">
+                                <a href="#" class="header">{{ fans.username }}</a>
+                                <div class="meta">
+                                    <span>jianjie</span>
+                                </div>
+                                <div class="extra">
+                                    <div class="ui label">{{ fans.topiccomment_set.count }}回答</div>
+                                    <div class="ui label">{{ fans.topic_set.count }}提问</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block con_six %}
+    <div class="ui raised link centered card">
+        <div class="image">
+            <img src="{{ MEDIA_URL }}{{ request.user.avatar }}">
+        </div>
+        <div class="content">
+            <a class="header">{{ request.user }}</a>
+            <div class="meta">
+                <span class="date">{{ request.user.date_joined|date:"Y-m-d" }}加入</span>
+            </div>
+        </div>
+        <div class="extra center aligned content">
+            <div class="ui grid">
+                <div class="three column row">
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;22</div>
+                            <div class="item">关注</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;30</div>
+                            <div class="item">粉丝</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;15</div>
+                            <div class="item">帖子</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}

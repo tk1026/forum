@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block con_ten %}
+    <div class="ui raised segment">
+        <div class="ui breadcrumb">
+            <a href="#" class="section">主页</a>
+            <i class="right angle icon divider"></i>
+            <a href="#" class="section">技术</a>
+            <i class="right angle icon divider"></i>
+            <a href="#" class="section">Python</a>
+        </div>
+        <!--主题内容-->
+        <div class="ui vertical segment">
+            <div class="ui container">
+                <div class="ui big relaxed divided list">
+                    {% for topic in topic_list %}
+                        <div class="item">
+                            <div class="content">
+                                <a class="header">{{ topic.title }}</a>
+                                <div class="extra">
+                                    <div class="ui label">{{ topic.add_time|date:"Y-m-d" }}</div>
+                                    <div class="ui label">{{ topic.topiccomment_set.count }}回答</div>
+                                    <div class="ui label">30关注</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block con_six %}
+    <div class="ui raised link centered card">
+        <div class="image">
+            <img src="{{ MEDIA_URL }}{{ request.user.avatar }}">
+        </div>
+        <div class="content">
+            <a class="header">{{ request.user }}</a>
+            <div class="meta">
+                <span class="date">{{ request.user.date_joined|date:"Y-m-d" }}加入</span>
+            </div>
+        </div>
+        <div class="extra center aligned content">
+            <div class="ui grid">
+                <div class="three column row">
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;22</div>
+                            <div class="item">关注</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;30</div>
+                            <div class="item">粉丝</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;15</div>
+                            <div class="item">帖子</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}

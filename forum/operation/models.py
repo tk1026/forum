@@ -8,7 +8,7 @@ from topics.models import Topic
 
 class TopicComment(models.Model):
     """
-    主题评论
+    用户对主题评论
     """
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name=u"用户")
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, verbose_name=u"主题")
@@ -33,16 +33,14 @@ class UserFavorite(models.Model):
         verbose_name_plural = verbose_name
 
 
-class UserFollowing(models.Model):
+class UserRelation(models.Model):
     """
-    用户关注
+    用户关系
     """
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True, verbose_name=u"用户")
-    following_name = models.CharField(max_length=100, verbose_name=u"关注名称")
+    from_user = models.IntegerField(null=True, blank=True, verbose_name=u"关系发起者")
+    to_user = models.IntegerField(null=True, blank=True, verbose_name=u"关系接受者")
+    rel_type = models.CharField(choices=((1, "粉丝"), (2, "关注"), (3, "互相关注")), max_length=1, verbose_name="关系类型")
 
     class Meta:
-        verbose_name = u"用户关注"
+        verbose_name = u"用户关系"
         verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.following_name

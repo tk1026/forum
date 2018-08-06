@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block con_ten %}
+    <div class="ui raised segment">
+        <div class="ui breadcrumb">
+            <a href="#" class="section">主页</a>
+            <i class="right angle icon divider"></i>
+            <a href="#" class="section">技术</a>
+            <i class="right angle icon divider"></i>
+            <a href="#" class="section">Python</a>
+        </div>
+        <!--主题内容-->
+        <div class="ui vertical segment">
+            <div class="ui container">
+                <h2 class="ui dividing header">
+                    <img src="{{ MEDIA_URL }}{{ member.avatar }}" alt="" class="ui circular image">
+                    <div class="content">{{ member.username }}
+                        <div class="sub header">jieshao</div>
+                    </div>
+                    <div class="content">
+                        {% if not topic_user_id == login_user_id %}
+                            <button class="ui basic mini button" id="following-btn"
+                                    data-memberid="{{ member.id }}">
+                                {% if exist_rel == exist_inverse_rel %}
+                                    互相
+                                {% elif exist_rel == 2 %}
+                                    已
+                                {% endif %}
+                                关注
+                            </button>
+                        {% endif %}
+                    </div>
+                </h2>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block con_six %}
+    <div class="ui raised link centered card">
+        <div class="image">
+            <img src="img/cardtouxiang.png">
+        </div>
+        <div class="content">
+            <a class="header">Elyse</a>
+            <div class="meta">
+                <span class="date">2018-7-1加入</span>
+            </div>
+        </div>
+        <div class="extra center aligned content">
+            <div class="ui grid">
+                <div class="three column row">
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;22</div>
+                            <div class="item">关注</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;30</div>
+                            <div class="item">粉丝</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;15</div>
+                            <div class="item">帖子</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+
+        function following(current_elem, user_id) {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'operation:user_rel' %}",
+                data: {'user_id': user_id},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status == 'success') {
+                        if (data.msg == '互为关注') {
+                            $('#following-btn').text(data.msg);
+                        } else {
+                            $('#following-btn').text(data.msg);
+                        }
+                    } else if (data.status == 'fail') {
+                        $('#following-btn').text(data.msg);
+                    }
+                }
+            })
+
+        };
+
+        $('#following-btn').click(function () {
+            following($(this), $('#following-btn').data("memberid"));
+        });
+    </script>
+{% endblock %}
+

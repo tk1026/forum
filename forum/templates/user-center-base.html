@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/semantic.js' %}"></script>
+</head>
+<body style="background-color: #FAFAFA;">
+<!--nav-->
+<div class="ui large secondary menu" style="background-color: #FFFFFF; box-shadow: 2px 2px 5px #bbb;">
+    <div class="ui container">
+        <div class="item">
+            <img src="{% static 'img/ar-china.png' %}" alt="" class="" style="height: 50px; width: 80px;">
+        </div>
+        <a class="item" href="{% url 'topic:index' %}">
+            首页
+        </a>
+        <a class="item">
+            问答
+        </a>
+        <a class="item">
+            专栏
+        </a>
+        <div class="right menu">
+            <div class="item">
+                <div class="ui icon input">
+                    <input type="text" placeholder="搜索...">
+                    <i class="search link icon"></i>
+                </div>
+            </div>
+
+            {% if request.user.is_authenticated %}
+                <!--登录-->
+                <div class="ui text menu">
+                    <div class="header item">
+                        <a href="{% url 'users:user_center' %}">
+                            {{ request.user.username }}
+                        </a>
+                    </div>
+                    <a class="active item" href="{% url 'topic:pub' user.username %}">设置</a>
+                    <a class="item" href="{% url 'logout' %}">退出 </a>
+                </div>
+            {% else %}
+                <!--未登录-->
+                <div class="item">
+                    <div class="ui mini buttons">
+                        <button class="ui button" type="submit" onclick="location='{% url 'register' %}'">注册</button>
+                        <div class="or"></div>
+                        <button class="ui teal button" type="submit" onclick="location='{% url 'login' %}'">登入</button>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="ui vertical segment">
+    <div class="ui relaxed container">
+
+        <div class="ui raised segment">
+            <h2 class="ui dividing header">
+                <img src="{{ MEDIA_URL }}{{ request.user.avatar }}" alt="" class="ui circular image">
+                <div class="content">{{ request.user.nick_name }}
+                    <div class="sub header">{{ request.user }}</div>
+                </div>
+            </h2>
+
+            <div class="ui very relaxed horizontal list">
+                <div class="item">
+                    <div class="content" style="color: grey;">
+                        加入时间
+                    </div>
+                </div>
+            </div>&nbsp;&nbsp;
+            <div class="ui very relaxed horizontal list">
+                <div class="item">
+                    <div class="content">
+                        {{ request.user.date_joined|date:"Y-m-d" }}
+                    </div>
+                </div>
+            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="ui very relaxed horizontal list">
+                <div class="item">
+                    <div class="content" style="color: grey;">
+                        最后登录
+                    </div>
+                </div>
+            </div>&nbsp;&nbsp;
+            <div class="ui very relaxed horizontal list">
+                <div class="item">
+                    <div class="content">
+                        15分钟前
+                    </div>
+                </div>
+            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="ui very relaxed horizontal list">
+                <div class="item">
+                    <div class="content" style="color: grey;">
+                        邮箱
+                    </div>
+                </div>
+            </div>&nbsp;&nbsp;
+            <div class="ui very relaxed horizontal list">
+                <div class="item">
+                    <div class="content">
+                        {{ request.user.email }}
+                    </div>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+
+            <!--setting-->
+            <div class="ui vertical basic segment">
+                <div class="ui text container">
+                    <div class="ui items">
+                        {% block content %}
+
+                        {% endblock %}
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--footer-->
+
+<div class="ui vertical basic segment">
+    <div class="ui center aligned text container">
+        <a class="item" href="#">
+            <i class="big black icon github"></i>
+        </a>
+        <p>Copyright © 2017-2018 Augmented Reality.</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block con_ten %}
+    <div class="ui raised segment">
+        <div class="ui form {% if exists %}error{% else %}success{% endif %}">
+            <form method="post" action="{% url 'topic:pub_commit' user.username %}">
+                {{ topic_form.as_p }}
+                {% csrf_token %}
+                <button class="ui button" type="submit">提交</button>
+            </form>
+            <div class="ui {% if exists %}error{% else %}success{% endif %} message">
+                <p>{{ msg }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block con_six %}
+    <div class="ui raised link centered card">
+        <div class="image">
+            <img src="{{ MEDIA_URL }}{{ request.user.avatar }}">
+        </div>
+        <div class="content">
+            <a class="header">{{ request.user }}</a>
+            <div class="meta">
+                <span class="date">{{ request.user.date_joined|date:"Y-m-d" }}加入</span>
+            </div>
+        </div>
+        <div class="extra center aligned content">
+            <div class="ui grid">
+                <div class="three column row">
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;22</div>
+                            <div class="item">关注</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;30</div>
+                            <div class="item">粉丝</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui list">
+                            <div class="item">&nbsp;15</div>
+                            <div class="item">帖子</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <button class="ui bottom attached teal button"><i class="icon add"></i>创建新主题</button>
+    </div>
+{% endblock %}
+
+

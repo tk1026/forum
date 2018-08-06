@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/semantic.js' %}"></script>
+</head>
+<body style="background-color: #FAFAFA;">
+
+<!--登入弹框-->
+<div class="ui vertical basic segment" id="login-modal">
+    <h2 class="ui teal center aligned header">
+        <div class="content">
+            登入
+        </div>
+    </h2>
+    <form class="ui large form" action="{% url 'login' %}" method="post">
+        <div class="ui stacked segment">
+            <div class="field">
+                <div class="ui left icon input">
+                    <i class="envelope icon"></i>
+                    <input type="text" name="username" value="{{ login_form.username.value }}" placeholder="username">
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input type="password" name="password" value="{{ login_form.password.value }}" placeholder="Password">
+                </div>
+            </div>
+            <button class="ui fluid large teal submit button" type="submit">登入</button>
+        </div>
+        {% csrf_token %}
+    </form>
+    <div class="ui message">{{ msg }}</div>
+    <div class="ui message">{{ login_form.errors.username }}</div>
+    <div class="ui message">{{ login_form.errors.password }}</div>
+    <div class="ui message">{% for key, error in login_form.errors.items %}{{ error }}{% endfor %}</div>
+    <div class="ui bottom attached warning message">
+        <a href="#">忘记密码？</a>
+        <i class="icon help"></i> 还未注册？ <a href="#" id="login-modal-a">点此</a>注册。
+    </div>
+</div>
+
+<!--footer-->
+
+<div class="ui vertical basic segment">
+    <div class="ui center aligned text container">
+        <a class="item" href="#">
+            <i class="big black icon github"></i>
+        </a>
+        <p>Copyright © 2017-2018 Augmented Reality.</p>
+    </div>
+</div>
+
+</body>
+
+
+</html>

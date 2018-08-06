@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block con_ten %}
+    <div class="ui raised segment">
+        <div class="ui breadcrumb">
+            <a href="#" class="section">主页</a>
+            <i class="right angle icon divider"></i>
+            <a href="#" class="section">技术</a>
+            <i class="right angle icon divider"></i>
+            <a href="#" class="section">Python</a>
+        </div>
+        <!--主题详情-->
+        <div class="ui vertical segment">
+            <div class="ui container">
+                <h2 class="ui dividing header">
+                    <img src="{{ MEDIA_URL }}{{ topic.user.avatar }}" alt="" class="ui circular image"
+                         onclick='window.location.href="{% url 'topic:member' user.username %}"'>
+                    <div class="content">{{ topic.title }}
+                        <div class="sub header">by {{ topic.user }} at {{ topic.add_time | date:"Y-m-d" }} •
+                            12315人看过
+                        </div>
+                    </div>
+                    <button class="ui basic mini button" style="margin-left: 60px;" id="collection-btn"
+                            data-favid="{{ topic.id }}">收藏
+                    </button>
+                </h2>
+                <p>{{ topic.content }}</p>
+                <h6 class="ui header">
+                    <i class="tags icon"></i>
+                    <div class="content">java, c, python,</div>
+                </h6>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="ui raised segment">
+        <!--评论-->
+        <div class="ui comments">
+            <div class="ui dividing header">评论</div>
+            {% if request.user.is_authenticated %}
+                <!-- 已登录 -->
+                <form class="ui reply form" method="post" action="{% url 'operation:comment' topic.id %}">
+                    {{ comment_form.as_p }}
+                    {% csrf_token %}
+                    <button class="ui blue labeled submit icon button" type="submit"><i class="icon edit"></i>
+                        回复
+                    </button>
+                </form>
+            {% else %}
+                <!-- 未登录 -->
+                <div class="ui center aligned vertical basic segment">
+                    <a class="ui blue labeled submit icon button" type="submit" href="{% url 'login' %}"><i
+                            class="icon edit"></i> 登录回复 </a>
+                </div>
+            {% endif %}
+            {% for comment in topic_comment %}
+                <div class="comment">
+                    <a class="avatar">
+                        <img src="{{ MEDIA_URL }}{{ comment.user.avatar }}">
+                    </a>
+                    <div class="content">
+                        <a class="author">{{ request.user.username }}</a>
+                        <div class="metadata">
+                            <div class="date">{{ comment.add_time | date:"m-d" }}</div>
+                            <div class="rating"><i class="star icon"></i> 5 Faves</div>
+                        </div>
+                        <div class="text">@tony #1: {{ comment.content }}</div>
+                        <div class="ui label" style="position: absolute; right: 10px; top: 15px;">
+                            #{{ comment.id }}</div>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block con_six %}
+    {% if request.user.is_authenticated %}
+        <!--个人信息-->
+        <div class="ui raised link centered card">
+            <div class="image">
+                <img src="{{ MEDIA_URL }}{{ request.user.avatar }}">
+            </div>
+            <div class="content">
+                <a class="header">{{ request.user }}</a>
+                <div class="meta">
+                    <span class="date">{{ request.user.date_joined|date:"Y-m-d" }}加入</span>
+                </div>
+            </div>
+            <div class="extra center aligned content">
+                <div class="ui grid">
+                    <div class="three column row">
+                        <div class="column">
+                            <div class="ui list">
+
+                                <div class="item">&nbsp;
+                                    <a href="{% url 'users:user_follower' %}">
+                                        {% if follower %}
+                                            {{ follower.count }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div class="item">关注</div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui list">
+
+                                <div class="item">&nbsp;
+                                    <a href="{% url 'users:user_fans' %}">
+                                        {% if fans %}
+                                            {{ fans.count }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div class="item">粉丝</div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="ui list">
+                                <a class="item" href="{% url 'users:fav_topic' %}">&nbsp;{{ topic_count }}</a>
+                                <div class="item">帖子</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="ui bottom attached teal button" onclick="location='{% url 'topic:pub' user.username %}'">
+                <i class="icon add"></i>创建新主题
+            </button>
+        </div>
+    {% else %}
+        <div class="ui raised segment">
+            <button class="ui fluid teal button" id="test-btn">发帖</button>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        $('#collection-btn').on('click', function () {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'operation:add_fav' %}",
+                data: {'fav_id': $(this).data("favid")},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status == 'success') {
+                        $('#collection-btn').text(data.msg);
+                    } else if (data.status == 'fail') {
+                        $('#collection-btn').text(data.msg);
+                    }
+                }
+
+            })
+
+        })
+    </script>
+{% endblock %}
+
+
+
+
+
